@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./.docker/local/node/Dockerfile
+    container_name: event-management-node
+    working_dir: /app
+    ports:
+      - 3000:3000
+      - 6006:6006
+    volumes:
+      - .:/app:consistent
+    stdin_open: true
+    tty: true
+    networks:
+      - default
