@@ -1,4 +1,4 @@
-# event-management
+## event-management
 
 イベント管理システムのリポジトリです。
 
@@ -21,16 +21,41 @@
 git clone git@github.com:yusuke-takatsu/event-management.git
 ```
 
+### backend
+```
+cd backend
+```
+
 #### install
 
 ```
 make install
 ```
 
-## push 前にやること
+#### push 前にやること
 
 下記コマンド実行し、コードがフォーマットされていることを確認
 
 ```
 make format
+```
+
+### frontend
+```
+cd frontend
+```
+
+#### コンテナ立ち上げ
+```
+make init
+```
+
+#### image作成
+```
+make up
+```
+
+#### StoryBook起動
+```
+make story
 ```
