@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { theme } from '../src/theme'
+import { theme } from '../src/utils'
 
 export const decorators = [
   (Story) => {
