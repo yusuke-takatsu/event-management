@@ -1,5 +1,4 @@
 import React, { ReactNode, useCallback, useRef } from 'react'
-import './button.css'
 import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button'
 import MuiCircularProgress from '@mui/material/CircularProgress'
 import styled from '@emotion/styled'
