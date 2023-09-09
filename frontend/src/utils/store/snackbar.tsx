@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 import { RecoilAtomKeys } from './recoilKeys'
 import { atom, useRecoilState } from 'recoil'
+import { AlertColor } from '@mui/material'
 
 type SnackbarState = {
   isOpen: boolean
   text: string
-  severity: string
+  severity: AlertColor
 }
 
 type SnackbarParams = Pick<SnackbarState, 'text' | 'severity'>

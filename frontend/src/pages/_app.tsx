@@ -8,6 +8,7 @@ import { CacheProvider } from '@emotion/react'
 import { axios } from '@/utils/axiosClient'
 import { isCommonErrorResponse } from '@/utils/helpers/handleErrors'
 import { RecoilRoot } from 'recoil'
+import { BasicSnackbar } from '@/components/Snackbars'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -35,6 +36,7 @@ export default function App(props: MyAppProps) {
         <SWRConfig value={swrConfigValue}>
           <RecoilRoot>
             <Component {...pageProps} />
+            <BasicSnackbar />
           </RecoilRoot>
         </SWRConfig>
       </MUIThemeProvider>
