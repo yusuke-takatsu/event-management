@@ -5,9 +5,14 @@ import { Button } from '@/components/Buttons'
 import Link from 'next/link'
 import { BaseTitle, BaseText } from '@/theme'
 import { InputText } from '@/components/Forms'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { LoginParams, LoginSchema } from '@/utils/types/schemas/auth'
+import { statusCode } from '@/utils/constants'
+import { axios } from '@/utils/axiosClient'
+import { useSnackbarState } from '@/utils/store/snackbar'
+import { useRouter } from 'next/router'
+import { isErrorResponse } from '@/utils/helpers/handleErrors'
 
 const Wrapper = styled('div')`
   height: 100vh;
@@ -44,26 +49,7 @@ const StyledLink = styled(Link)`
   font-weight: ${fontWeight.bold};
 `
 
-const schema = z.object({
-  email: z
-    .string()
-    .nonempty('メールアドレスは必須です。')
-    .email({ message: 'メールアドレスの形式が正しくありません。' }),
-  password: z
-    .string()
-    .nonempty('パスワードは必須です。')
-    .min(8, 'パスワードは8文字以上である必要があります。')
-    .max(255, 'パスワードは255文字以下である必要があります。')
-    .refine(
-      (value) =>
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[!-~]*$/.test(
-          value
-        ),
-      'パスワードは、大文字、小文字、数字、記号の全てが含まれたものである必要があります。'
-    ),
-})
-
-type LoginParams = z.infer<typeof schema>
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 export const LoginForm = () => {
   const {
@@ -71,18 +57,30 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginParams>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(LoginSchema),
   })
 
+  const { openSnackbar } = useSnackbarState()
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
-  const login = async (data: any) => {
+  const login = async (data: LoginParams) => {
     setIsLoading(true)
 
     try {
-      await new Promise((resolve, reject) => {})
+      await axios.get(`http://localhost:80/sanctum/csrf-cookie`, {})
+      await axios.post(`${apiUrl}/login`, data, {})
+
+      router.push('mypage')
     } catch (e) {
-      console.log(e)
+      if (isErrorResponse(e)) {
+        if (e.status === statusCode.VALIDATION) {
+          openSnackbar({
+            text: e.data.message,
+            severity: 'error',
+          })
+        }
+      }
     } finally {
       setIsLoading(false)
     }
