@@ -15,4 +15,12 @@ interface EventRepository
      * @return Collection
      */
     public function get(array $select = ['*']): Collection;
+
+    /**
+     * 作成
+     *
+     * @param  array  $params
+     * @return void
+     */
+    public function create(array $params): void;
 }

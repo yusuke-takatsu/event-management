@@ -16,4 +16,12 @@ class EventRepositoryImpl implements EventRepository
     {
         return Event::select($select)->get();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function create(array $params): void
+    {
+        Event::create($params);
+    }
 }
