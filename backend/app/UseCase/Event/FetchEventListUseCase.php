@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UseCase\Event;
 
 use App\Repositories\Event\EventRepository;
+use Illuminate\Support\Collection;
 
 class FetchEventListUseCase
 {
@@ -21,7 +22,7 @@ class FetchEventListUseCase
      *
      * @return void
      */
-    public function execute()
+    public function execute(): Collection
     {
         $select = [
             'id',
