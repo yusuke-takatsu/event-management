@@ -8,6 +8,7 @@ use App\Notifications\VerifiedEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
@@ -59,5 +60,13 @@ class User extends Authenticatable implements MustVerifyEmail
         Log::info('認証メール送信 (VerificationNotification) をqueueに渡します。');
         $this->notify(new VerifiedEmailNotification());
         Log::info('認証メール送信 (VerificationNotification) をqueueに渡し終えました。');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function users(): HasMany
+    {
+        return $this->hasMany(Event::class);
     }
 }
