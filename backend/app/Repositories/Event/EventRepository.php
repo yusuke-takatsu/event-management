@@ -23,4 +23,13 @@ interface EventRepository
      * @return void
      */
     public function create(array $params): void;
+
+    /**
+     * 更新
+     *
+     * @param string $eventId
+     * @param array $params
+     * @return void
+     */
+    public function update(string $eventId, array $params): void;
 }

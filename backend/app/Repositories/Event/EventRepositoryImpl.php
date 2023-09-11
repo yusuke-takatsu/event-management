@@ -24,4 +24,12 @@ class EventRepositoryImpl implements EventRepository
     {
         Event::create($params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function update(string $eventId, array $params): void
+    {
+        Event::where('id', $eventId)->update($params);
+    }
 }

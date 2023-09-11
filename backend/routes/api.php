@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Event\FetchEventListController;
 use App\Http\Controllers\Event\StoreEventController;
+use App\Http\Controllers\Event\UpdateEventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,8 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', LogoutController::class)->name('logout');
 
     // イベント
-    Route::prefix('/event')->group(function () {
+    Route::prefix('/event')->name('event.')->group(function () {
         Route::get('/', FetchEventListController::class)->name('index');
         Route::post('/', StoreEventController::class)->name('store');
+        Route::put('/{eventId}', UpdateEventController::class)->name('update');
     });
 });
