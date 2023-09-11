@@ -10,25 +10,24 @@ use Illuminate\Support\Facades\Auth;
 class UpdateEventUseCase
 {
     /**
-     * @param EventRepository $eventRepository
+     * @param  EventRepository  $eventRepository
      */
     public function __construct(
-      private readonly EventRepository $eventRepository
-    )
-    {
+        private readonly EventRepository $eventRepository
+    ) {
     }
 
     /**
      * イベント更新
      *
-     * @param string $eventId
-     * @param array $params
+     * @param  string  $eventId
+     * @param  array  $params
      * @return void
      */
     public function execute(string $eventId, array $params)
     {
         $user = Auth::user();
-        
+
         $params['user_id'] = $user->id;
 
         $this->eventRepository->update($eventId, $params);
