@@ -8,22 +8,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Event extends Model
+class Participation extends Model
 {
     use HasFactory, HasUlids;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-    ];
 
     /**
      * The attributes that should be cast.
@@ -31,6 +19,7 @@ class Event extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'status' => 'boolean',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
@@ -44,11 +33,10 @@ class Event extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function users(): BelongsToMany
+    public function event(): BelongsTo
     {
-        return $this->belongsToMany(User::class, 'participations')
-            ->withPivot('status');
+        return $this->belongsTo(Event::class);
     }
 }

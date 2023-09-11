@@ -13,19 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 class UpdateEventController extends Controller
 {
     /**
-     * @param UpdateEventUseCase $updateEventUseCase
+     * @param  UpdateEventUseCase  $updateEventUseCase
      */
     public function __construct(
-      private readonly UpdateEventUseCase $updateEventUseCase
-    )
-    {
+        private readonly UpdateEventUseCase $updateEventUseCase
+    ) {
     }
 
     /**
      * イベント更新
      *
-     * @param UpdateEventRequest $request
-     * @param string $eventId
+     * @param  UpdateEventRequest  $request
+     * @param  string  $eventId
      * @return JsonResponse
      */
     public function __invoke(UpdateEventRequest $request, string $eventId): JsonResponse
