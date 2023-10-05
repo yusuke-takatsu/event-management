@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Event\FetchEventListController;
 use App\Http\Controllers\Event\StoreEventController;
 use App\Http\Controllers\Event\UpdateEventController;
+use App\Http\Controllers\Participation\FetchParticipationDownloadCsvController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +28,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', FetchEventListController::class)->name('index');
         Route::post('/', StoreEventController::class)->name('store');
         Route::put('/{eventId}', UpdateEventController::class)->name('update');
+    });
+
+    // イベント参加
+    Route::prefix('/participation')->name('participation.')->group(function() {
+        Route::get('download', FetchParticipationDownloadCsvController::class)->name('download');
     });
 });
