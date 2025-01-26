@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS fishing_api_server_test;
+GRANT ALL PRIVILEGES ON *.* TO 'fishing_api_server_test'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
