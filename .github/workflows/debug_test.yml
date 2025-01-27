@@ -1,0 +1,77 @@
+name: debug test
+
+on: push
+
+jobs:
+  debug-and-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php: [8.2]
+    runs-on: ${{ matrix.os }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: fishing_api_server_test
+          MYSQL_USER: fishing_api_server
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: fishing_api_server_test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@4
+      
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, pdo_mysql, exif, pcntl, bcmath, oci8
+          coverage: pcov
+      
+      - name: Verify Composer Version
+        run: composer --version
+      
+      - name: Cache composer
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Composer install
+        run: composer install -q --no-ansi --no-interaction --no-suggest --optimize-autoloader --prefer-dist
+      
+      - name: Dump Autoload
+        run: composer dump-autoload
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run database migrations
+        run: php artisan migrate
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit --coverage-text --colors=auto --display-incomplete
