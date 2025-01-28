@@ -41,7 +41,7 @@ class LoginUseCase
                 'method' => __METHOD__,
             ]);
 
-            throw new AuthenticationException();
+            throw new AuthenticationException('ログイン情報が誤っています。');
         }
 
         RateLimiter::clear($this->throttleKey($input));
@@ -61,7 +61,7 @@ class LoginUseCase
 
         event(new Lockout(request()));
 
-        throw new AuthenticationException();
+        throw new AuthenticationException('最大ログイン回数を超えています。しばらくしてからログインし直してください。');
     }
 
     /**

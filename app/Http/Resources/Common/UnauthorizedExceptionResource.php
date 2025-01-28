@@ -18,8 +18,13 @@ class UnauthorizedExceptionResource extends JsonResource
     public function __construct(UnauthorizedException|AuthenticationException $e)
     {
         parent::__construct($e);
+
+        $message = $e->getMessage() === 'Unauthenticated'
+          ? 'ログインしてください。'
+          : $e->getMessage();
+
         $this->resource = [
-            'message' => 'ログインしてください。',
+            'message' => $message,
             'errors' => [],
         ];
     }
