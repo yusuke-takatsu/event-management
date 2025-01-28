@@ -10,6 +10,7 @@ use App\Http\Resources\Common\ValidationExceptionResource;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -47,12 +48,30 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * @param Throwable $e
+     * @return void
+     */
+    public function report(Throwable $e)
+    {
+        Log::info('エラーが発生しました。', [
+            'exception' => get_class($e),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'api' => request()->path(),
+            'stacktrace' => $e->getTraceAsString(),
+        ]);
+    }
+
+    /**
      * @return void
      */
     private function renderFromBadRequest(): void
     {
         $this->renderable(function (BadRequestHttpException $e, Request $request) {
-            return new BadRequestExceptionResource($e);
+            return (new BadRequestExceptionResource($e))
+                ->response()
+                ->setStatusCode(BadRequestExceptionResource::$status);
         });
     }
 
@@ -62,7 +81,9 @@ class Handler extends ExceptionHandler
     private function renderFromUnauthorized(): void
     {
         $this->renderable(function (UnauthorizedException|AuthenticationException $e, Request $request) {
-            return new UnauthorizedExceptionResource($e);
+            return (new UnauthorizedExceptionResource($e))
+                ->response()
+                ->setStatusCode(UnauthorizedExceptionResource::$status);
         });
     }
 
@@ -72,7 +93,9 @@ class Handler extends ExceptionHandler
     private function renderFromForbidden(): void
     {
         $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
-            return new AccessDeniedExceptionResource($e);
+            return (new AccessDeniedExceptionResource($e))
+                ->response()
+                ->setStatusCode(AccessDeniedExceptionResource::$status);
         });
     }
 
@@ -82,7 +105,9 @@ class Handler extends ExceptionHandler
     private function renderFromNotFound(): void
     {
         $this->renderable(function (NotFoundHttpException $e, Request $request) {
-            return new NotFoundExceptionResource($e);
+            return (new NotFoundExceptionResource($e))
+                ->response()
+                ->setStatusCode(NotFoundExceptionResource::$status);
         });
     }
 
@@ -92,7 +117,9 @@ class Handler extends ExceptionHandler
     private function renderFromValidationException(): void
     {
         $this->renderable(function (ValidationException $e, Request $request) {
-            return new ValidationExceptionResource($e);
+            return (new ValidationExceptionResource($e))
+                ->response()
+                ->setStatusCode(ValidationExceptionResource::$status);
         });
     }
 
