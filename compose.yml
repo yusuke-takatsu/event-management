@@ -72,6 +72,12 @@ services:
       MYSQL_PASSWORD: $DB_PASSWORD
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: fishing-api-server-mailhog
+    ports:
+      - 8025:8025
+
   redis:
     image: redis:6.2-buster
     container_name: fishing-api-server-redis
