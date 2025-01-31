@@ -15,7 +15,7 @@ class LoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'message' => 'ログインしました。'
+            'message' => 'ログインしました。',
         ];
     }
 }

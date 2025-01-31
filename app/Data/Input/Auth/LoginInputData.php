@@ -11,9 +11,9 @@ class LoginInputData extends Data
      * @param string $password
      */
     public function __construct(
-      public readonly string $email,
-      public readonly string $password,
-      public readonly bool $remember = false,
+        public readonly string $email,
+        public readonly string $password,
+        public readonly bool $remember = false,
     ) {}
 
     public function onlyEmailAndPassword(): array

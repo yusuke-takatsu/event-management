@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\UseCase\Auth;
 
@@ -47,12 +47,12 @@ class LoginUseCase
         RateLimiter::clear($this->throttleKey($input));
     }
 
-   /**
-    * レート制限されていないことを確認する
-    *
-    * @param LoginInputData $input
-    * @return void
-    */
+    /**
+     * レート制限されていないことを確認する
+     *
+     * @param LoginInputData $input
+     * @return void
+     */
     private function ensureIsNotRateLimited(LoginInputData $input): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey($input), self::LOGIN_FAILURE_COUNT)) {

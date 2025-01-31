@@ -10,16 +10,16 @@ class PasswordPattern implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $patterns = [
-          'uppercase' => '/[A-Z]/',
-          'lowercase' => '/[a-z]/',
-          'number' => '/\d/',
-          'symbol' => '/[!"#$%&\'()*+,-.\/:;<>=?@[\]^_`{}|~]/',
-        ];  
+            'uppercase' => '/[A-Z]/',
+            'lowercase' => '/[a-z]/',
+            'number' => '/\d/',
+            'symbol' => '/[!"#$%&\'()*+,-.\/:;<>=?@[\]^_`{}|~]/',
+        ];
 
         $characterClassesCount = 0;
         foreach ($patterns as $pattern) {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Common;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 

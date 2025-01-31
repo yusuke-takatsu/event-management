@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'max:255', 'email'],
-            'password' => ['required', 'string', 'min:8', new PasswordPattern()]
+            'password' => ['required', 'string', 'min:8', new PasswordPattern()],
         ];
     }
 
@@ -39,7 +39,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'メールアドレス',
             'password' => 'パスワード',
-        ]; 
+        ];
     }
 
     /**
