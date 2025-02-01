@@ -76,6 +76,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->email->value();
     }
 
+     /**
+     * {@inheritDoc}
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+            'status' => UserStatus::MEMBER(),
+        ])->save();
+    }
+
     /**
      * @return HasOne
      */
