@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->email->value();
     }
 
-     /**
+    /**
      * {@inheritDoc}
      */
     public function markEmailAsVerified()
