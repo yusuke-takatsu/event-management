@@ -9,10 +9,13 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\EmailVerifyResource;
 use App\Http\Resources\Auth\LoginResource;
+use App\Http\Resources\Auth\LogoutResource;
 use App\Http\Resources\Auth\RegisterResource;
 use App\Http\UseCase\Auth\EmailVerifyUseCase;
 use App\Http\UseCase\Auth\LoginUseCase;
 use App\Http\UseCase\Auth\RegisterUseCase;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -50,5 +53,18 @@ class AuthController extends Controller
         $useCase->execute($request->token);
 
         return new EmailVerifyResource(null);
+    }
+
+    /**
+     * @param Request $request
+     * @return LogoutResource
+     */
+    public function logout(Request $request): LogoutResource
+    {
+        Auth::guard('user')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return new LogoutResource(null);
     }
 }
