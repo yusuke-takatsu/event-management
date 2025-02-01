@@ -3,8 +3,6 @@
 namespace App\Services\User\DomainService;
 
 use App\Models\EmailVerificationToken;
-use App\Models\User;
-use App\Services\User\ValueObject\Email;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -18,22 +16,22 @@ class EmailVerifyValidated
      */
     public static function execute(?EmailVerificationToken $emailVeriy): void
     {
-      if (is_null($emailVeriy)) {
-          Log::info('not found is token', [
-              'method' => __METHOD__
-          ]);
+        if (is_null($emailVeriy)) {
+            Log::info('not found is token', [
+                'method' => __METHOD__,
+            ]);
 
-          throw new NotFoundHttpException();
-      }
+            throw new NotFoundHttpException();
+        }
 
-      if (CarbonImmutable::parse($emailVeriy->expires_at)->isPast()) {
-          Log::info('token expiration', [
-              'method' => __METHOD__,
-          ]);
+        if (CarbonImmutable::parse($emailVeriy->expires_at)->isPast()) {
+            Log::info('token expiration', [
+                'method' => __METHOD__,
+            ]);
 
-          throw ValidationException::withMessages([
-              'トークンの有効期限が切れています。'
-          ]);
-      }
+            throw ValidationException::withMessages([
+                'トークンの有効期限が切れています。',
+            ]);
+        }
     }
 }
