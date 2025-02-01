@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\User\UserStatus;
+use App\Services\User\ValueObject\Email;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,7 +26,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => fake()->unique()->safeEmail(),
+            'email' => new Email(fake()->unique()->safeEmail()),
             'email_verified_at' => now(),
             'password' => Hash::make('Password123'),
             'status' => UserStatus::MEMBER,
