@@ -15,6 +15,7 @@ class ProfileBuilder extends Builder
     public function createFromEntity(Profile $profile)
     {
         return ModelsProfile::create([
+            'user_id' => $profile->userId,
             'nick_name' => $profile->nickName,
             'date_of_birth' => $profile->dateOfBirth,
             'fishing_started_date' => $profile->fishingStartedDate,
