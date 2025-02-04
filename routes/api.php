@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,8 @@ Route::get('/verify/email/{token}', [AuthController::class, 'verifyEmail'])->nam
 
 Route::middleware('auth:user')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::prefix('/profiles')->name('profile.')->group(function () {
+        Route::post('/', [ProfileController::class, 'store'])->name('store');
+    });
 });
