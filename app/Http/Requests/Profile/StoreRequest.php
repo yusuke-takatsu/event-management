@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
             'nick_name' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'fishing_started_date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'image' => ['nullable', 'string', 'file', 'mimes:jpg,jpeg,ping', 'max:3072'],
+            'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:3072'],
         ];
     }
 
