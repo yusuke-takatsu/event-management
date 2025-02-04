@@ -27,7 +27,7 @@ class FishingStartedDateCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
         if ($value instanceof FishingStartedDate) {
-            return $value->value();
+            return $value->value()->toDateString();
         }
 
         throw new InvalidArgumentException(sprintf('%s以外の値は設定できません。', FishingStartedDate::class));

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Builder\ProfileBuilder;
-use App\Services\Profile\ValueObject\DateOfBirth;
-use App\Services\Profile\ValueObject\FishingStartedDate;
-use App\Services\Profile\ValueObject\Image;
+use App\Casts\DateOfBirthCast;
+use App\Casts\FishingStartedDateCast;
+use App\Casts\ImageCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,9 +28,9 @@ class Profile extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'date_of_birth' => DateOfBirth::class,
-        'fishing_started_date' => FishingStartedDate::class,
-        'image' => Image::class,
+        'date_of_birth' => DateOfBirthCast::class,
+        'fishing_started_date' => FishingStartedDateCast::class,
+        'image' => ImageCast::class,
     ];
 
     /**
