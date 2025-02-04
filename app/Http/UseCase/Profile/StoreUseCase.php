@@ -37,7 +37,7 @@ class StoreUseCase
         $uploadFilePath = $this->uploadedFile($input);
 
         $profile = new Profile(
-            id: null,
+            userId: $user->id,
             nickName: $input->nickName,
             dateOfBirth: new DateOfBirth($input->dateOfBirth),
             fishingStartedDate: new FishingStartedDate($input->fishingStartedDate),
@@ -57,8 +57,8 @@ class StoreUseCase
             return null;
         }
 
-        $hashFileName = Image::makeHashName($input->image);
+        $hashFileName = Image::makeHashName($input->image)->value();
 
-        return Storage::disk('s3')->putFile('images', $input->image, $hashFileName);
+        return Storage::disk('s3_private')->putFile('images', $input->image, $hashFileName);
     }
 }
