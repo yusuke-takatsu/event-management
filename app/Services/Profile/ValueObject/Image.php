@@ -18,7 +18,7 @@ class Image
      */
     public static function makeHashName(UploadedFile $file): self
     {
-        $hashName = sprintf('%s.%s', (string) Str::uuid(), $file->getExtension());
+        $hashName = sprintf('%s.%s', (string) Str::uuid(), $file->extension());
 
         return new self($hashName);
     }
