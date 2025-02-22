@@ -1,6 +1,8 @@
-# fishing-api-server
+# event-management
 
-FishingAPIのAPIサーバーのリポジトリです。
+[![debug test](https://github.com/yusuke-takatsu/event-management/actions/workflows/debug_test.yml/badge.svg)](https://github.com/yusuke-takatsu/event-management/actions/workflows/debug_test.yml)
+
+event-managementのAPIサーバーのリポジトリです。
 
 ## 環境
 
@@ -14,7 +16,7 @@ FishingAPIのAPIサーバーのリポジトリです。
 #### clone
 
 ```
-git clone git@github.com:yusuke-takatsu/fishing-api-server-v2.git
+git clone git@github.com:yusuke-takatsu/event-management.git
 ```
 
 #### install
