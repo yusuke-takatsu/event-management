@@ -12,5 +12,5 @@
 
 {{ $outroLines[2] }}
 
-fishing
+event-management
 @endcomponent
