@@ -50,6 +50,14 @@ clear:
 format:
 	docker compose exec app ./vendor/bin/pint --config=pint.json
 
+.PHONY: mysql
+mysql:
+	docker exec -it event-management-mysql /bin/bash -c "mysql -uroot -proot event_management"
+
+.PHONY: redis
+redis:
+	docker exec -it event-management-redis /bin/bash -c "redis-cli"
+
 ifeq ($(OS_NAME), "Linux")
 shell:
 	docker compose exec app su -s /bin/bash ${shell id -un}
