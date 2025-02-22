@@ -16,8 +16,8 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_DATABASE: fishing_api_server_test
-          MYSQL_USER: fishing_api_server
+          MYSQL_DATABASE: event_management_test
+          MYSQL_USER: event_management
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: password
         options: >-
@@ -29,7 +29,7 @@ jobs:
     env:
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DB_DATABASE: fishing_api_server_test
+      DB_DATABASE: event_management_test
       DB_USERNAME: root
       DB_PASSWORD: password
 

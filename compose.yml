@@ -4,7 +4,7 @@ services:
   nginx:
     build: '.docker/local/nginx'
     platform: linux/arm64/v8
-    container_name: fishing-api-server-nginx
+    container_name: event-management-nginx
     ports:
       - '8080:80'
     volumes:
@@ -15,7 +15,7 @@ services:
 
   app:
     build: '.docker/local/php'
-    container_name: fishing-api-server-app
+    container_name: event-management-app
     working_dir: /app
     volumes:
       - '.:/app'
@@ -37,7 +37,7 @@ services:
 
   queue_worker:
     build: '.docker/local/php'
-    container_name: fishing-api-server-queue-worker
+    container_name: event-management-queue-worker
     working_dir: '/app'
     command: 'php artisan queue:work --tries=3 --queue=high,default,low'
     environment:
@@ -57,7 +57,7 @@ services:
       - 'host.docker.internal:host-gateway'
 
   mysql:
-    container_name: fishing-api-server-mysql
+    container_name: event-management-mysql
     platform: linux/amd64
     build: '.docker/local/mysql'
     ports:
@@ -74,19 +74,19 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    container_name: fishing-api-server-mailhog
+    container_name: event-management-mailhog
     ports:
       - 8025:8025
 
   redis:
     image: redis:6.2-buster
-    container_name: fishing-api-server-redis
+    container_name: event-management-redis
     ports:
       - '6379:6379'
 
   minio:
     image: minio/minio
-    container_name: fishing-api-server-minio
+    container_name: event-management-minio
     ports:
       - '9001:9001'
       - '9002:9002'
@@ -94,10 +94,10 @@ services:
       MINIO_ROOT_USER: access_key
       MINIO_ROOT_PASSWORD: secret_key
     entrypoint: bash
-    command: -c "/opt/bin/minio server /export --address :9001 --console-address :9002"
+    command: -c "minio server /export --address :9001 --console-address :9002"
 
   create-bucket:
-    container_name: fishing-api-server-create-bucket
+    container_name: event-management-create-bucket
     image: minio/mc
     entrypoint: ['']
     command:
