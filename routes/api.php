@@ -23,6 +23,7 @@ Route::middleware('auth:user')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::prefix('/profiles')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::post('/', [ProfileController::class, 'store'])->name('store');
     });
 });
