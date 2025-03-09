@@ -1,0 +1,16 @@
+name: build and deploy container app
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+        description: Branch name
+
+jobs:
+  check-input:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch input value
+        run: echo "Received branch: ${{ inputs.branch }}"
