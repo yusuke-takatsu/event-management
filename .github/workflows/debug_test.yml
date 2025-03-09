@@ -36,20 +36,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: intl, pdo_mysql, exif, pcntl, bcmath, oci8
           coverage: pcov
-      
+
       - name: Verify Composer Version
         run: composer --version
-      
+
       - name: Cache composer
         id: composer-cache
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: Composer install
         run: composer install -q --no-ansi --no-interaction --no-suggest --optimize-autoloader --prefer-dist
-      
+
       - name: Dump Autoload
         run: composer dump-autoload
 
@@ -75,3 +75,14 @@ jobs:
 
       - name: Run tests
         run: ./vendor/bin/phpunit --coverage-text --colors=auto --display-incomplete
+
+  deploy:
+    needs: debug-and-test
+    if: >-
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/develop' ||
+      github.ref == 'refs/heads/staging'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      barnch: ${{ github.ref }}
+    secrets: inherit
