@@ -9,9 +9,34 @@ on:
         description: Branch name
 
 jobs:
-  check-input:
+  check:
     runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.branch-name-check.outputs.env_name }}
     steps:
-      - name: Check branch input value
+      - name: Check branch name
+        id: branch-name-check
         run: |
-          echo "Received branch: ${{ inputs.branch }}"
+          echo "Running on branch ${{ inputs.branch }}"
+            if [ "${{ inputs.branch}}" = "refs/heads/main" ]; then
+              echo "env_name=production" >> $GITHUB_OUTPUT
+            elif [ "${{ inputs.branch}}" = "refs/heads/develop" ]; then
+              echo "env_name=develop" >> $GITHUB_OUTPUT
+            elif [ "${{ inputs.branch}}" = "refs/heads/staging" ]; then
+              echo "env_name=staging" >> $GITHUB_OUTPUT
+            else
+              echo "skip"
+              exit 1
+            fi
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: check
+    environment: ${{ needs.check.outputs.env_name }}
+    env:
+      APPNAME: ${{ vars.APPNAME }}
+      APP_ENV: ${{ secrets.APP_ENV }}
+    steps:
+      - run: echo $APPNAME
+      - run: echo "${APP_ENV:0:1} ${APP_ENV#?}"
+
