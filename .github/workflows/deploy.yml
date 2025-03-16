@@ -13,4 +13,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check branch input value
-        run: echo "Received branch: ${{ inputs.branch }}"
+        run: |
+          echo "Received branch: ${{ inputs.branch }}"
