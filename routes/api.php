@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/health', function () {
+    return response()->json(['message' => 'connect OK for get method']);
+});
+
+Route::post('/health', function () {
+    return response()->json(['message' => 'connect OK for post method']);
+});
+
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/verify/email/{token}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
