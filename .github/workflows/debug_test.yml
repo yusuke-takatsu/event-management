@@ -84,5 +84,5 @@ jobs:
       github.ref == 'refs/heads/staging'
     uses: ./.github/workflows/deploy.yml
     with:
-      barnch: ${{ github.ref }}
+      branch: ${{ github.ref }}
     secrets: inherit
