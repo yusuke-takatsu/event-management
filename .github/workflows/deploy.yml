@@ -34,10 +34,9 @@ jobs:
     needs: check
     environment: ${{ needs.check.outputs.env_name }}
     env:
-      APPNAME: ${{ vars.APPNAME }}
-      APP_ENV: ${{ secrets.APP_ENV }}
+      APP_ENV: ${{ vars.APP_ENV }}
+      APP_NAME: ${{ secrets.APP_NAME }}
     steps:
-      - run: ${{ needs.check.outputs.env_name }}
-      - run: echo $APPNAME
-      - run: echo "${APP_ENV:0:1} ${APP_ENV#?}"
+      - run: echo $APP_ENV
+      - run: echo "${APP_NAME:0:1} ${APP_NAME#?}"
 
