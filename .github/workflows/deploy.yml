@@ -33,10 +33,44 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     environment: ${{ needs.check.outputs.env_name }}
-    env:
-      APP_ENV: ${{ vars.APP_ENV }}
-      APP_NAME: ${{ secrets.APP_NAME }}
     steps:
-      - run: echo $APP_ENV
-      - run: echo "${APP_NAME:0:1} ${APP_NAME#?}"
+      - name: Git clone the repository
+        uses: actions/checkout@3
 
+      - name: load env variables
+        shell: bash
+        env:
+          ENV_VARIABLES: ${{ toJson(vars)}}
+          SECRETS: ${{ toJson(secrets) }}
+        run: |
+          declare -A secrets_array
+          while IFS='=' read -r key value; do
+              secrets_array[$key]=$value
+          done < <(echo "$SECRETS" | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+          for key in "${!secrets_array[@]}"
+          do
+              value="${secrets_array[$key]}"
+              export "$key"="$value"
+          done
+
+          declare -A env_array
+          while IFS='=' read -r key value; do
+              env_array[$key]=$value
+              echo "Read key=$key, value=$value"
+          done < <(echo "$ENV_VARIABLES" | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+          for key in "${!env_array[@]}"
+          do
+              value="${env_array[$key]}"
+              echo "Exporting $key=$value"
+              export "$key"="$value"
+          done
+
+          touch .docker/${{ needs.check.outputs.env_name }}/php/env
+
+          envsubst < .github/envs/${{ needs.check.outputs.env_name }}/.env.${{ needs.check.outputs.env_name }} > .docker/${{ needs.check.outputs.env_name }}/php/env
+
+      - name: verify envsubst output
+        shell: bash
+        run: |
+          echo "==== Contents of generated env file ===="
+          cat .docker/${{ needs.check.outputs.env_name }}/php/env
