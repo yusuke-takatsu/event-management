@@ -35,7 +35,7 @@ jobs:
     environment: ${{ needs.check.outputs.env_name }}
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@3
+        uses: actions/checkout@v3
 
       - name: load env variables
         shell: bash
