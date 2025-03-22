@@ -84,6 +84,7 @@ jobs:
       github.ref == 'refs/heads/staging'
     permissions:
       id-token: write
+      contents: read
     uses: ./.github/workflows/deploy.yml
     with:
       branch: ${{ github.ref }}
