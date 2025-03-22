@@ -8,6 +8,10 @@ on:
         type: string
         description: Branch name
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -36,6 +40,13 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GithubActions@${{ github.sha }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: load env variables
         shell: bash
@@ -69,8 +80,5 @@ jobs:
 
           envsubst < .github/envs/${{ needs.check.outputs.env_name }}/.env.${{ needs.check.outputs.env_name }} > .docker/${{ needs.check.outputs.env_name }}/php/env
 
-      - name: verify envsubst output
-        shell: bash
-        run: |
-          echo "==== Contents of generated env file ===="
-          cat .docker/${{ needs.check.outputs.env_name }}/php/env
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
